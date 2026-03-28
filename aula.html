@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Para Cecília</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        
+        body {
+            width: 100vw;
+            height: 100vh;
+            background-color: #ffeef2;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: fixed;
+        }
+
+        #start-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #ffeef2;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn-start {
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            background-color: #ff4d6d;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(255, 77, 109, 0.4);
+            cursor: pointer;
+        }
+
+        .intro-text {
+            color: #c9184a;
+            font-style: italic;
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        /* Coração */
+        .heart-container {
+            position: relative;
+            width: 180px;
+            height: 160px;
+            display: none; /* Só aparece após o clique */
+            animation: pulse 1s infinite;
+        }
+
+        .heart-half {
+            position: absolute;
+            width: 90px; height: 160px;
+            background-color: #ff4d6d;
+        }
+
+        .left { left: 0; clip-path: path('M90 160 C90 160 0 115 0 60 A30 30 0 0 1 90 60 V160 Z'); }
+        .right { right: 0; clip-path: path('M0 160 C0 160 90 115 90 60 A30 30 0 0 0 0 60 V160 Z'); }
+
+        #counter {
+            position: absolute; width: 100%; top: 35%;
+            text-align: center; color: white;
+            font-size: 3rem; font-weight: bold; z-index: 15;
+        }
+
+        #message {
+            position: absolute;
+            width: 85%; max-width: 450px;
+            background: white;
+            padding: 25px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            display: none;
+            text-align: left;
+            z-index: 20;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        h2 { color: #ff4d6d; text-align: center; margin-bottom: 15px; }
+        p { color: #444; line-height: 1.6; margin-bottom: 15px; }
+        .particle { position: absolute; pointer-events: none; z-index: 100; }
+    </style>
+</head>
+<body>
+
+    <div id="start-screen">
+        <p class="intro-text">Foi o melhor que eu consegui fazer!<br>Espero que goste ❤️</p>
+        <button class="btn-start" onclick="iniciar()">ABRIR SURPRESA</button>
+    </div>
+
+    <div class="heart-container" id="meuCoracao">
+        <div id="counter"></div>
+        <div class="heart-half left"></div>
+        <div class="heart-half right"></div>
+    </div>
+
+    <div id="message">
+        <h2>Para minha amada Cecília ❤️</h2>
+        <p>Sabe, Cecília, eu tentei escrever algo que estivesse à sua altura, mas as palavras parecem pequenas perto do que sinto por você.</p>
+        <p>Você é o meu melhor pensamento ao acordar e o meu sorriso mais sincero. Obrigado por ser essa pessoa incrível que transforma tudo ao meu redor.</p>
+        <p><strong>Conto os segundos para o final de abril...</strong></p>
+        <p>Saber que finalmente vou te ver pela primeira vez me faz sorrir sozinho. Não aguento mais a expectativa de te olhar nos olhos e te dar aquele abraço que eu ensaio todos os dias. Quero te apertar forte e sentir que você é real!</p>
+        <p>Eu te amo daqui até a eternidade! ❤️</p>
+        <p style="text-align: center;"><strong>Com amor, Victor</strong></p>
+    </div>
+
+    <script>
+        function iniciar() {
+            document.getElementById('start-screen').style.display = 'none';
+            const coracao = document.getElementById('meuCoracao');
+            const counterEl = document.getElementById('counter');
+            coracao.style.display = 'block';
+
+            let count = 1;
+            const interval = setInterval(() => {
+                if (count <= 3) {
+                    counterEl.innerText = count;
+                    count++;
+                } else {
+                    clearInterval(interval);
+                    mostrarMensagem();
+                }
+            }, 1000);
+        }
+
+        function mostrarMensagem() {
+            document.getElementById('meuCoracao').style.display = 'none';
+            document.getElementById('message').style.display = 'block';
+            for (let i = 0; i < 40; i++) {
+                setTimeout(criarEmoji, i * 50);
+            }
+        }
+
+        function criarEmoji() {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.innerHTML = '❤️';
+            p.style.left = Math.random() * 100 + 'vw';
+            p.style.top = '100vh';
+            p.style.fontSize = (Math.random() * 20 + 15) + 'px';
+            document.body.appendChild(p);
+
+            p.animate([
+                { transform: 'translateY(0)', opacity: 1 },
+                { transform: `translateY(-110vh) translateX(${Math.random() * 50 - 25}px)`, opacity: 0 }
+            ], { duration: 3000 }).onfinish = () => p.remove();
+        }
+    </script>
+</body>
+</html>
